@@ -1,0 +1,53 @@
+{
+  "users": {
+    "standard": {
+      "username": "standard_user",
+      "password": "secret_sauce"
+    },
+    "locked": {
+      "username": "locked_out_user",
+      "password": "secret_sauce"
+    },
+    "problem": {
+      "username": "problem_user",
+      "password": "secret_sauce"
+    },
+    "performance": {
+      "username": "performance_glitch_user",
+      "password": "secret_sauce"
+    },
+    "invalid": {
+      "username": "invalid_user",
+      "password": "wrong_password"
+    }
+  },
+  "products": {
+    "backpack": "Sauce Labs Backpack",
+    "bike_light": "Sauce Labs Bike Light",
+    "bolt_tshirt": "Sauce Labs Bolt T-Shirt",
+    "fleece_jacket": "Sauce Labs Fleece Jacket",
+    "onesie": "Sauce Labs Onesie",
+    "tshirt_red": "Test.allTheThings() T-Shirt (Red)"
+  },
+  "checkout": {
+    "valid": {
+      "first_name": "John",
+      "last_name": "Doe",
+      "postal_code": "12345"
+    },
+    "empty": {
+      "first_name": "",
+      "last_name": "",
+      "postal_code": ""
+    }
+  },
+  "errors": {
+    "locked_user": "Epic sadface: Sorry, this user has been locked out.",
+    "invalid_credentials": "Epic sadface: Username and password do not match any user in this service",
+    "empty_username": "Epic sadface: Username is required",
+    "empty_password": "Epic sadface: Password is required",
+    "empty_first_name": "Error: First Name is required",
+    "empty_last_name": "Error: Last Name is required",
+    "empty_postal_code": "Error: Postal Code is required"
+  }
+}
