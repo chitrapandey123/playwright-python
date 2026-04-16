@@ -6,7 +6,7 @@ from pages.products_page import ProductsPage
 
 class TestLogin:
 
-    def test_successful_login_with_valid_credentials(self, login_page, test_data):
+    def test_invalid_user_login(self, login_page, test_data):
         # Precondition: User has a valid account
 
         # Enter valid credentials and login
