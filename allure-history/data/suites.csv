@@ -1,12 +1,12 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Thu Apr 16 20:38:36 UTC 2026","Thu Apr 16 20:38:36 UTC 2026","139","tests","test_cart","","","","test_add_multiple_different_products_to_cart[chromium]","
+"passed","Thu Apr 16 20:51:14 UTC 2026","Thu Apr 16 20:51:14 UTC 2026","135","tests","test_cart","","","","test_add_multiple_different_products_to_cart[chromium]","
     QA-3: Add Item to Cart
     Test: Add multiple different products to cart
     Verify that user can add multiple different products to cart
     and cart badge updates correctly for each addition.
     "
-"passed","Thu Apr 16 20:38:36 UTC 2026","Thu Apr 16 20:38:36 UTC 2026","135","tests","test_login","TestLogin","","","test_sucessful_standard_user_login[chromium]",""
-"passed","Thu Apr 16 20:38:37 UTC 2026","Thu Apr 16 20:38:37 UTC 2026","133","tests","test_login","TestLogin","","","test_successful_login_with_valid_credentials[chromium]","
+"passed","Thu Apr 16 20:51:14 UTC 2026","Thu Apr 16 20:51:14 UTC 2026","121","tests","test_login","TestLogin","","","test_sucessful_standard_user_login[chromium]",""
+"passed","Thu Apr 16 20:51:14 UTC 2026","Thu Apr 16 20:51:14 UTC 2026","135","tests","test_login","TestLogin","","","test_successful_login_with_valid_credentials[chromium]","
         QA-1: User should be able to log in
         Test: Successful login with valid credentials
         
