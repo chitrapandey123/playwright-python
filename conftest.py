@@ -7,7 +7,6 @@ import os
 import pytest
 from playwright.sync_api import Page
 from pages.login_page import LoginPage
-from pages.products_page import ProductsPage
 from pages.cart_page import CartPage
 from pages.checkout_page import CheckoutPage
 
@@ -28,10 +27,6 @@ def login_page(page: Page):
 
 
 @pytest.fixture
-def products_page(page: Page):
-    return ProductsPage(page)
-
-
 @pytest.fixture
 def cart_page(page: Page):
     return CartPage(page)
@@ -51,4 +46,3 @@ def logged_in(page: Page, test_data):
         test_data["users"]["standard"]["username"],
         test_data["users"]["standard"]["password"],
     )
-    return ProductsPage(page)
