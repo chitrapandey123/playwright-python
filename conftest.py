@@ -4,6 +4,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 import json
 import pytest
+import allure
 from playwright.sync_api import Page
 from pages.login_page import LoginPage
 from pages.cart_page import CartPage
@@ -41,5 +42,20 @@ def logged_in(page: Page, test_data):
         test_data["users"]["standard"]["username"],
         test_data["users"]["standard"]["password"],
     )
-    from pages.login_page import LoginPage as LP
     return lp
+
+
+# Auto-attach screenshot on test failure
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    report = outcome.get_result()
+    if report.when == "call" and report.failed:
+        page = item.funcargs.get("page")
+        if page:
+            screenshot = page.screenshot()
+            allure.attach(
+                screenshot,
+                name="Screenshot on failure",
+                attachment_type=allure.attachment_type.PNG,
+            )
