@@ -1,11 +1,17 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Thu Apr 16 20:52:12 UTC 2026","Thu Apr 16 20:52:12 UTC 2026","138","tests","test_login","TestLogin","","","test_successful_login_with_valid_credentials[chromium]","
+"passed","Thu Apr 16 20:52:37 UTC 2026","Thu Apr 16 20:52:37 UTC 2026","117","tests","test_login","TestLogin","","","test_successful_login_with_valid_credentials[chromium]","
         QA-1: User should be able to log in
         Test: Successful login with valid credentials
         
         Preconditions: User is on login page
         "
-"broken","Thu Apr 16 20:52:11 UTC 2026","Thu Apr 16 20:52:11 UTC 2026","0","tests","test_cart","","","","test_view_cart_with_multiple_products[chromium]","
+"passed","Thu Apr 16 20:52:35 UTC 2026","Thu Apr 16 20:52:35 UTC 2026","140","tests","test_cart","","","","test_add_multiple_different_products_to_cart[chromium]","
+    QA-3: Add Item to Cart
+    Test: Add multiple different products to cart
+    Verify that user can add multiple different products to cart
+    and cart badge updates correctly for each addition.
+    "
+"passed","Thu Apr 16 20:52:36 UTC 2026","Thu Apr 16 20:52:36 UTC 2026","198","tests","test_cart","","","","test_view_cart_with_multiple_products[chromium]","
     Test: View cart with multiple added products
     Jira Story: QA-4 - View Cart Contents
     Type: Positive
@@ -17,7 +23,13 @@
     2. Click on the cart icon
     3. Verify cart page displays all added products with correct details
     "
-"broken","Thu Apr 16 20:52:10 UTC 2026","Thu Apr 16 20:52:10 UTC 2026","1","tests","test_cart","","","","test_view_cart_with_added_products[chromium]","
+"passed","Thu Apr 16 20:52:37 UTC 2026","Thu Apr 16 20:52:37 UTC 2026","99","tests","test_login","TestLogin","","","test_login_failure_with_invalid_username[chromium]","
+        Test: Login failure with invalid username
+        Type: Negative
+        Jira Story: QA-1 - User should be able to log in
+        Preconditions: Login page is displayed
+        "
+"passed","Thu Apr 16 20:52:36 UTC 2026","Thu Apr 16 20:52:36 UTC 2026","106","tests","test_cart","","","","test_view_cart_with_added_products[chromium]","
     Test: View cart with added products
     Jira Story: QA-4 - View Cart Contents
     Type: Positive
@@ -30,10 +42,4 @@
     3. Verify cart page opens and displays list of all added products 
        with correct names, prices, quantities, and images
     "
-"passed","Thu Apr 16 20:52:10 UTC 2026","Thu Apr 16 20:52:10 UTC 2026","131","tests","test_cart","","","","test_add_multiple_different_products_to_cart[chromium]","
-    QA-3: Add Item to Cart
-    Test: Add multiple different products to cart
-    Verify that user can add multiple different products to cart
-    and cart badge updates correctly for each addition.
-    "
-"passed","Thu Apr 16 20:52:11 UTC 2026","Thu Apr 16 20:52:11 UTC 2026","127","tests","test_login","TestLogin","","","test_sucessful_standard_user_login[chromium]",""
+"passed","Thu Apr 16 20:52:37 UTC 2026","Thu Apr 16 20:52:37 UTC 2026","131","tests","test_login","TestLogin","","","test_sucessful_standard_user_login[chromium]",""
