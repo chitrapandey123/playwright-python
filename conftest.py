@@ -6,6 +6,7 @@ import json
 import pytest
 from playwright.sync_api import Page
 from pages.login_page import LoginPage
+from pages.products_page import ProductsPage
 from pages.cart_page import CartPage
 from pages.checkout_page import CheckoutPage
 
@@ -21,6 +22,11 @@ def login_page(page: Page):
     lp = LoginPage(page)
     lp.goto()
     return lp
+
+
+@pytest.fixture
+def products_page(page: Page):
+    return ProductsPage(page)
 
 
 @pytest.fixture
