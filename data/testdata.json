@@ -27,7 +27,8 @@
     "bolt_tshirt": "Sauce Labs Bolt T-Shirt",
     "fleece_jacket": "Sauce Labs Fleece Jacket",
     "onesie": "Sauce Labs Onesie",
-    "tshirt_red": "Test.allTheThings() T-Shirt (Red)"
+    "tshirt_red": "Test.allTheThings() T-Shirt (Red)",
+    "multiple_items": ["Sauce Labs Backpack", "Sauce Labs Bike Light", "Sauce Labs Bolt T-Shirt"]
   },
   "checkout": {
     "valid": {
