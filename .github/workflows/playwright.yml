@@ -33,7 +33,7 @@ jobs:
           BASE_URL: ${{ secrets.BASE_URL || 'https://www.saucedemo.com' }}
           VALID_USERNAME: ${{ secrets.VALID_USERNAME || 'standard_user' }}
           VALID_PASSWORD: ${{ secrets.VALID_PASSWORD || 'secret_sauce' }}
-        run: pytest --headless -v --tb=short
+        run: pytest -v --tb=short
 
       - name: Upload test results
         uses: actions/upload-artifact@v4

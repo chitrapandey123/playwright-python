@@ -3,9 +3,10 @@ import pytest
 from pages.login_page import LoginPage
 
 
+
 class TestLogin:
 
-    def test_invalid_user_login(self, login_page, test_data):
+    def test_sucessful_standard_user_login(self, login_page, test_data):
         # Precondition: User has a valid account
 
         # Enter valid credentials and login
@@ -16,5 +17,3 @@ class TestLogin:
 
         # Verify redirected to products page
         login_page.assert_login_success()
-
-
