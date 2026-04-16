@@ -44,16 +44,17 @@ jobs:
       - name: Run tests
         env:
           BASE_URL: ${{ secrets.BASE_URL || 'https://www.saucedemo.com' }}
-          VALID_USERNAME: ${{ secrets.VALID_USERNAME || 'standard_user' }}
-          VALID_PASSWORD: ${{ secrets.VALID_PASSWORD || 'secret_sauce' }}
-        run: pytest -v --tb=short
+        run: |
+          mkdir -p allure-results
+          pytest -v --tb=short
         continue-on-error: true
 
       - name: Copy Allure history
         if: always()
         run: |
-          if [ -d "gh-pages/allure-history" ]; then
-            cp -r gh-pages/allure-history allure-results/history
+          mkdir -p allure-results/history
+          if [ -d "gh-pages/allure-history/history" ]; then
+            cp -r gh-pages/allure-history/history/. allure-results/history/
           fi
 
       - name: Generate Allure report
