@@ -1,5 +1,4 @@
 pytest
 pytest-playwright
-pytest-allure-adaptor
-allure-pytest
+allure-pytest>=2.13.2
 python-dotenv

@@ -35,7 +35,6 @@ jobs:
 
       - name: Download previous Allure history
         uses: actions/checkout@v4
-        if: always()
         continue-on-error: true
         with:
           ref: gh-pages
@@ -47,7 +46,6 @@ jobs:
         run: |
           mkdir -p allure-results
           pytest -v --tb=short
-        continue-on-error: true
 
       - name: Copy Allure history
         if: always()
