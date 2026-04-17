@@ -1,12 +1,18 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Fri Apr 17 18:09:50 UTC 2026","Fri Apr 17 18:09:50 UTC 2026","114","tests","test_login","TestLogin","","","test_successful_login_with_valid_credentials[chromium]","
+"passed","Fri Apr 17 18:18:50 UTC 2026","Fri Apr 17 18:18:50 UTC 2026","104","tests","test_login","TestLogin","","","test_sucessful_standard_user_login[chromium]",""
+"passed","Fri Apr 17 18:18:51 UTC 2026","Fri Apr 17 18:18:51 UTC 2026","116","tests","test_login","TestLogin","","","test_successful_login_with_valid_credentials[chromium]","
         QA-1: User should be able to log in
         Test: Successful login with valid credentials
         
         Preconditions: User is on login page
         "
-"passed","Fri Apr 17 18:09:49 UTC 2026","Fri Apr 17 18:09:50 UTC 2026","140","tests","test_login","TestLogin","","","test_sucessful_standard_user_login[chromium]",""
-"passed","Fri Apr 17 18:09:48 UTC 2026","Fri Apr 17 18:09:48 UTC 2026","178","tests","test_cart","","","","test_view_cart_with_multiple_products[chromium]","
+"passed","Fri Apr 17 18:18:48 UTC 2026","Fri Apr 17 18:18:48 UTC 2026","162","tests","test_cart","","","","test_add_multiple_different_products_to_cart[chromium]","
+    QA-3: Add Item to Cart
+    Test: Add multiple different products to cart
+    Verify that user can add multiple different products to cart
+    and cart badge updates correctly for each addition.
+    "
+"broken","Fri Apr 17 18:18:50 UTC 2026","Fri Apr 17 18:18:50 UTC 2026","179","tests","test_cart","","","","test_view_cart_with_multiple_products[chromium]","
     Test: View cart with multiple added products
     Jira Story: QA-4 - View Cart Contents
     Type: Positive
@@ -18,36 +24,13 @@
     2. Click on the cart icon
     3. Verify cart page displays all added products with correct details
     "
-"passed","Fri Apr 17 18:09:49 UTC 2026","Fri Apr 17 18:09:49 UTC 2026","194","tests","test_cart","","","","test_remove_product_from_cart[chromium]","
-    Test: Remove product from cart
-    Type: Positive
-    Jira Story: QA-3 - Add Item to Cart
-    Preconditions: User is logged in and has one product in cart
-    "
-"passed","Fri Apr 17 18:09:49 UTC 2026","Fri Apr 17 18:09:49 UTC 2026","97","tests","test_cart","","","","test_view_empty_cart[chromium]","
-    Test: View empty cart
-    Type: Edge Case
-    Jira Story: QA-4 - View Cart Contents
-    Preconditions: User is logged in and cart is empty
-    "
-"passed","Fri Apr 17 18:09:50 UTC 2026","Fri Apr 17 18:09:50 UTC 2026","108","tests","test_login","TestLogin","","","test_login_failure_with_invalid_username[chromium]","
+"passed","Fri Apr 17 18:18:52 UTC 2026","Fri Apr 17 18:18:52 UTC 2026","96","tests","test_login","TestLogin","","","test_login_failure_with_invalid_username[chromium]","
         Test: Login failure with invalid username
         Type: Negative
         Jira Story: QA-1 - User should be able to log in
         Preconditions: Login page is displayed
         "
-"failed","Fri Apr 17 18:09:51 UTC 2026","Fri Apr 17 18:09:51 UTC 2026","153","tests","test_products","TestViewProductListings","","","test_view_product_listings_after_successful_login[chromium]","
-        Test: View product listings after successful login
-        Type: Positive
-        Preconditions: User has valid login credentials
-        "
-"passed","Fri Apr 17 18:09:47 UTC 2026","Fri Apr 17 18:09:47 UTC 2026","139","tests","test_cart","","","","test_add_multiple_different_products_to_cart[chromium]","
-    QA-3: Add Item to Cart
-    Test: Add multiple different products to cart
-    Verify that user can add multiple different products to cart
-    and cart badge updates correctly for each addition.
-    "
-"passed","Fri Apr 17 18:09:47 UTC 2026","Fri Apr 17 18:09:48 UTC 2026","98","tests","test_cart","","","","test_view_cart_with_added_products[chromium]","
+"passed","Fri Apr 17 18:18:49 UTC 2026","Fri Apr 17 18:18:49 UTC 2026","109","tests","test_cart","","","","test_view_cart_with_added_products[chromium]","
     Test: View cart with added products
     Jira Story: QA-4 - View Cart Contents
     Type: Positive
