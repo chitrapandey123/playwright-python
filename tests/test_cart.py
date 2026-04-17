@@ -115,4 +115,4 @@ def test_view_cart_with_multiple_products(
     for product in products:
         cart_page.assert_product_in_cart(product["name"])
         cart_page.assert_product_price(product["name"], product["price"])
-        cart_page.assert_product_quantity(product["name"], test_data["cart"]["default_quantity"])
+        cart_page.assert_product_quantity(product["name"], test_data["cart"]["7"])

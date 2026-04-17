@@ -7,7 +7,6 @@ import pytest
 import allure
 from playwright.sync_api import Page
 from pages.login_page import LoginPage
-from pages.products_page import ProductsPage
 from pages.cart_page import CartPage
 from pages.checkout_page import CheckoutPage
 
@@ -27,7 +26,12 @@ def login_page(page: Page):
 
 @pytest.fixture
 def products_page(page: Page):
-    return ProductsPage(page)
+    # Import here to handle case where products_page.py may not exist yet
+    try:
+        from pages.products_page import ProductsPage
+        return ProductsPage(page)
+    except ImportError:
+        return None
 
 
 @pytest.fixture
@@ -51,7 +55,6 @@ def logged_in(page: Page, test_data):
     return lp
 
 
-# Auto-attach screenshot on test failure
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
@@ -59,9 +62,18 @@ def pytest_runtest_makereport(item, call):
     if report.when == "call" and report.failed:
         page = item.funcargs.get("page")
         if page:
-            screenshot = page.screenshot()
             allure.attach(
-                screenshot,
+                page.screenshot(),
                 name="Screenshot on failure",
                 attachment_type=allure.attachment_type.PNG,
+            )
+            allure.attach(
+                page.url,
+                name="URL on failure",
+                attachment_type=allure.attachment_type.TEXT,
+            )
+            allure.attach(
+                page.content(),
+                name="Page HTML on failure",
+                attachment_type=allure.attachment_type.HTML,
             )
