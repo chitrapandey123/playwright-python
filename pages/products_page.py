@@ -81,7 +81,7 @@ class ProductsPage(BasePage):
         assert len(items) > 0, "No products found on the page"
         for item in items:
             # Check for product image
-            expect(item.locator(".inventory_item_img")).to_be_visible()
+            expect(item.locator("img.inventory_item_img")).to_be_visible()
             # Check for product name
             expect(item.locator(".inventory_item_name")).to_be_visible()
             # Check for product price
