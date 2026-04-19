@@ -71,5 +71,8 @@
     "empty_first_name": "Error: First Name is required",
     "empty_last_name": "Error: Last Name is required",
     "empty_postal_code": "Error: Postal Code is required"
+  },
+  "urls": {
+    "base_url": "https://www.saucedemo.com"
   }
 }
