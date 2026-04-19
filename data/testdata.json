@@ -46,7 +46,11 @@
         "name": "Sauce Labs Bolt T-Shirt",
         "price": "$15.99"
       }
-    ]
+    ],
+    "item1": {
+      "name": "TODO: replace with actual value",
+      "price": "TODO: replace with actual value"
+    }
   },
   "checkout": {
     "valid": {
