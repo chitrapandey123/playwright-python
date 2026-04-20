@@ -23,6 +23,11 @@ def login_page(page: Page):
     lp.goto()
     return lp
 
+@pytest.fixture
+def login_page_obj(page: Page):
+    """LoginPage object without navigation - use when already logged in"""
+    return LoginPage(page)
+
 
 @pytest.fixture
 def products_page(page: Page):
@@ -52,6 +57,8 @@ def logged_in(page: Page, test_data):
         test_data["users"]["standard"]["username"],
         test_data["users"]["standard"]["password"],
     )
+    '''from pages.products_page import ProductsPage
+    return ProductsPage(page)'''
     return lp
 
 

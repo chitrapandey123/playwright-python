@@ -11,8 +11,8 @@ from pages.login_page import LoginPage
 @pytest.mark.cart
 def test_add_multiple_different_products_to_cart(
     logged_in,
-    products_page: ProductsPage,
-    test_data: dict
+    products_page,
+    test_data
 ):
     """
     QA-3: Add Item to Cart
@@ -46,9 +46,9 @@ def test_add_multiple_different_products_to_cart(
 @pytest.mark.positive
 def test_view_cart_with_added_products(
     logged_in,
-    products_page: ProductsPage,
-    cart_page: CartPage,
-    test_data: dict
+    products_page,
+    cart_page,
+    test_data
 ):
     """
     Test: View cart with added products
@@ -84,9 +84,9 @@ def test_view_cart_with_added_products(
 @pytest.mark.positive
 def test_view_cart_with_multiple_products(
     logged_in,
-    products_page: ProductsPage,
-    cart_page: CartPage,
-    test_data: dict
+    products_page,
+    cart_page,
+    test_data
 ):
     """
     Test: View cart with multiple added products
@@ -124,7 +124,7 @@ def test_view_cart_with_multiple_products(
 @pytest.mark.cart
 def test_view_empty_cart(
     logged_in,
-    cart_page: CartPage,
+    cart_page,
     test_data
 ):
     """
@@ -145,7 +145,7 @@ def test_view_empty_cart(
 @pytest.mark.cart
 def test_remove_product_from_cart(
     logged_in,
-    products_page: ProductsPage,
+    products_page,
     test_data
 ):
     """
