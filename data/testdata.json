@@ -70,7 +70,8 @@
     "empty_password": "Epic sadface: Password is required",
     "empty_first_name": "Error: First Name is required",
     "empty_last_name": "Error: Last Name is required",
-    "empty_postal_code": "Error: Postal Code is required"
+    "empty_postal_code": "Error: Postal Code is required",
+    "login_required": "TODO: replace with actual value"
   },
   "urls": {
     "base_url": "https://www.saucedemo.com"
