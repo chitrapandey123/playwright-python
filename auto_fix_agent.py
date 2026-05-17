@@ -295,7 +295,7 @@ def _base_branch() -> str:
     ).stdout.strip() or "main"
 
 
-def commit_and_push_pr(branch: str, summary: str, timestamp: str):
+def commit_and_push_pr(branch: str, summary: str, timestamp: str, fix_plan: dict):
     """Commit fixes, push branch, open PR. Called after fixes are applied."""
     # Ensure there are changes
     status = _run(["git", "status", "--porcelain"])
@@ -305,6 +305,9 @@ def commit_and_push_pr(branch: str, summary: str, timestamp: str):
 
     # Stage all changed files
     _run(["git", "add", "-A"])
+
+    # Collect the actual diff for the terminal + PR body
+    diff_output = _run(["git", "diff", "--staged"]).stdout
 
     # Commit
     commit_msg = (
@@ -325,23 +328,52 @@ def commit_and_push_pr(branch: str, summary: str, timestamp: str):
         return None
     print(f"[+] Branch pushed: {branch}")
 
-    # Create PR via gh CLI (fall back to browser URL if gh not available)
+    # Print changes summary to terminal
+    fixes = fix_plan.get("fixes", [])
+    print(f"\n{'─' * 60}")
+    print(f"  CHANGES MADE  ({len(fixes)} fix(es))")
+    print(f"{'─' * 60}")
+    for fix in fixes:
+        print(f"\n  File : {fix['file']}")
+        print(f"  What : {fix['description']}")
+        print(f"  Before: {fix['original'][:120].strip()!r}")
+        print(f"  After : {fix['replacement'][:120].strip()!r}")
+    print(f"\n{'─' * 60}\n")
+
+    # Build PR body with per-fix before/after table
+    fixes_section = ""
+    for fix in fixes:
+        fixes_section += (
+            f"#### `{fix['file']}`\n"
+            f"{fix['description']}\n\n"
+            f"```diff\n"
+            f"- {fix['original'].strip()}\n"
+            f"+ {fix['replacement'].strip()}\n"
+            f"```\n\n"
+        )
+
+    base = _base_branch()
+    remote_url = _run(["git", "remote", "get-url", "origin"]).stdout.strip()
+    repo_path = re.sub(r"(https://github\.com/|git@github\.com:)", "", remote_url).removesuffix(".git")
+    compare_url = f"https://github.com/{repo_path}/compare/{base}...{branch}"
+
     body = (
-        "## Auto-Fix Agent Report\n\n"
-        f"**Root cause summary:** {summary}\n\n"
-        "### What this agent did\n"
-        "1. Ran `pytest` to detect failures\n"
-        "2. Sent failures + source files to Claude AI for root-cause analysis\n"
-        "3. Applied the suggested code fixes\n"
-        "4. Re-ran tests to verify fixes\n"
-        "5. Opened this PR automatically\n\n"
-        "### Review checklist\n"
-        "- [ ] Diff looks correct\n"
-        "- [ ] Tests pass in CI\n"
-        "- [ ] No unintended changes\n\n"
-        "---\n"
-        "🤖 Generated with [Claude Code](https://claude.ai/claude-code)  \n"
-        "Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+        f"## Auto-Fix Agent — {timestamp}\n\n"
+        f"**Branch:** `{branch}`  \n"
+        f"**Base:** `{base}`  \n"
+        f"**Compare:** {compare_url}\n\n"
+        f"**Summary:** {summary}\n\n"
+        f"---\n\n"
+        f"### Changes made ({len(fixes)} fix(es))\n\n"
+        f"{fixes_section}"
+        f"---\n\n"
+        f"### Review checklist\n"
+        f"- [ ] Diff looks correct\n"
+        f"- [ ] Tests pass in CI\n"
+        f"- [ ] No unintended changes\n\n"
+        f"---\n"
+        f"🤖 Generated with [Claude Code](https://claude.ai/claude-code)  \n"
+        f"Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
     )
 
     # Try gh CLI; fall back to a browser compare URL if it is not installed
@@ -349,7 +381,6 @@ def commit_and_push_pr(branch: str, summary: str, timestamp: str):
         ["which", "gh"], capture_output=True, text=True
     ).stdout.strip()
 
-    base = _base_branch()
     gh_error = ""
     if gh_path:
         try:
@@ -369,12 +400,9 @@ def commit_and_push_pr(branch: str, summary: str, timestamp: str):
         gh_error = "gh not installed"
 
     # Fallback: print a GitHub compare URL the user can open in their browser
-    remote_url = _run(["git", "remote", "get-url", "origin"]).stdout.strip()
-    repo_path = re.sub(r"(https://github\.com/|git@github\.com:)", "", remote_url).removesuffix(".git")
-    compare_url = f"https://github.com/{repo_path}/compare/{base}...{branch}?expand=1"
     print(f"[WARN] gh CLI unavailable ({gh_error})")
     print(f"[*]  Open this URL to create the PR manually:")
-    print(f"     {compare_url}")
+    print(f"     {compare_url}?expand=1")
     return compare_url
 
 
@@ -510,10 +538,14 @@ def main():
 
     # ── 6. Commit, push, open PR ─────────────────────────────────────────────
     print("\n[6/6] Committing and creating pull request…")
-    pr_url = commit_and_push_pr(branch, fix_plan.get("summary", "auto-fix"), timestamp)
+    pr_url = commit_and_push_pr(branch, fix_plan.get("summary", "auto-fix"), timestamp, fix_plan)
 
     if pr_url:
-        _banner(f"PR created successfully!\n  {pr_url}")
+        _banner(
+            f"Auto-fix complete!\n\n"
+            f"  Branch : {branch}\n"
+            f"  PR     : {pr_url}"
+        )
         return 0
     else:
         print("\n[ERROR] PR creation failed.")
