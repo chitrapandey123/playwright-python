@@ -14,7 +14,7 @@ class ProductsPage(BasePage):
         self.cart_badge = page.locator(".shopping_cart_badge")
         self.cart_link = page.locator(".shopping_cart_link")
         self.sort_dropdown = page.locator('[data-test="product_sort_container"]')
-        self.menu_button = page.locator("#react-burger-menu-btn")
+        self.menu_button = page.locator("#react-burger-menu-btn_wrong")
         self.logout_link = page.locator("#logout_sidebar_link")
 
     @allure.step("Navigate to products page")
