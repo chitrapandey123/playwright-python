@@ -95,3 +95,9 @@ jobs:
           git config user.name "auto-fix-agent[bot]"
           git config user.email "auto-fix-agent@users.noreply.github.com"
           python auto_fix_agent.py
+
+      - name: Fail job if tests failed
+        if: steps.run_tests.outcome == 'failure'
+        run: |
+          echo "Tests failed — see Allure report for details."
+          exit 1
