@@ -2,3 +2,4 @@ pytest
 pytest-playwright
 allure-pytest==2.15.3
 python-dotenv
+anthropic

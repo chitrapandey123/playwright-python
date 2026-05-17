@@ -11,6 +11,7 @@ Workflow:
 """
 
 import json
+import os
 import re
 import subprocess
 import sys
@@ -85,6 +86,48 @@ def parse_failures(output):
                 break
 
     return failures
+
+
+# ---------------------------------------------------------------------------
+# Claude caller – Anthropic SDK (CI) with fallback to local CLI
+# ---------------------------------------------------------------------------
+
+def _call_claude(prompt: str) -> str | None:
+    """
+    Send a prompt to Claude and return the text response.
+    Prefers the Anthropic Python SDK (works in CI with ANTHROPIC_API_KEY).
+    Falls back to the local `claude` CLI for local runs.
+    """
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+
+    if api_key:
+        try:
+            import anthropic
+            client = anthropic.Anthropic(api_key=api_key)
+            message = client.messages.create(
+                model="claude-sonnet-4-6",
+                max_tokens=4096,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            return message.content[0].text.strip()
+        except ImportError:
+            print("[WARN] anthropic SDK not installed, falling back to claude CLI")
+        except Exception as e:
+            print(f"[ERROR] Anthropic SDK call failed: {e}")
+            return None
+
+    # Local fallback – claude CLI
+    result = subprocess.run(
+        ["claude", "-p", "--output-format", "text"],
+        input=prompt,
+        capture_output=True,
+        text=True,
+        cwd=PROJECT_ROOT,
+    )
+    if result.returncode != 0:
+        print(f"[ERROR] Claude CLI returned non-zero: {result.stderr[:300]}")
+        return None
+    return result.stdout.strip()
 
 
 # ---------------------------------------------------------------------------
@@ -171,19 +214,9 @@ If there is nothing to fix in code (e.g. the site is down), return:
 """
 
     print("[*] Sending to Claude for analysis…")
-    result = subprocess.run(
-        ["claude", "-p", "--output-format", "text"],
-        input=prompt,
-        capture_output=True,
-        text=True,
-        cwd=PROJECT_ROOT,
-    )
-
-    if result.returncode != 0:
-        print(f"[ERROR] Claude CLI returned non-zero: {result.stderr[:300]}")
+    response = _call_claude(prompt)
+    if response is None:
         return None
-
-    response = result.stdout.strip()
 
     # Strip markdown fences if Claude wrapped the JSON anyway
     response = re.sub(r"^```(?:json)?\s*", "", response, flags=re.MULTILINE)
@@ -237,28 +270,38 @@ def apply_fixes(fix_plan):
 
 
 # ---------------------------------------------------------------------------
-# Step 5 – Create branch, commit, push, open PR
+# Step 5 – Create branch FIRST, then commit + push + open PR
 # ---------------------------------------------------------------------------
 
-def create_pr(summary: str, timestamp: str):
-    """Create branch → commit → push → gh pr create. Returns PR URL or None."""
+def create_branch(timestamp: str) -> str | None:
+    """
+    Switch to a new auto-fix branch BEFORE any files are touched.
+    Returns the branch name, or None on failure.
+    """
+    base = _base_branch()
     branch = f"auto-fix/test-failures-{timestamp}"
+    r = _run(["git", "checkout", "-b", branch])
+    if r.returncode != 0:
+        print(f"[ERROR] Could not create branch: {r.stderr}")
+        return None
+    print(f"[+] Branch created: {branch}  (base branch '{base}' is untouched)")
+    return branch
 
+
+def _base_branch() -> str:
+    """Return the branch the agent was triggered from (CI or local)."""
+    return os.environ.get("BASE_BRANCH") or _run(
+        ["git", "rev-parse", "--abbrev-ref", "HEAD"]
+    ).stdout.strip() or "main"
+
+
+def commit_and_push_pr(branch: str, summary: str, timestamp: str):
+    """Commit fixes, push branch, open PR. Called after fixes are applied."""
     # Ensure there are changes
     status = _run(["git", "status", "--porcelain"])
     if not status.stdout.strip():
         print("[*] No changes to commit.")
         return None
-
-    # Make sure we start from main
-    _run(["git", "checkout", "main"])
-
-    # Create and switch to new branch
-    r = _run(["git", "checkout", "-b", branch])
-    if r.returncode != 0:
-        print(f"[ERROR] Could not create branch: {r.stderr}")
-        return None
-    print(f"[+] Branch created: {branch}")
 
     # Stage all changed files
     _run(["git", "add", "-A"])
@@ -306,6 +349,7 @@ def create_pr(summary: str, timestamp: str):
         ["which", "gh"], capture_output=True, text=True
     ).stdout.strip()
 
+    base = _base_branch()
     gh_error = ""
     if gh_path:
         try:
@@ -313,7 +357,7 @@ def create_pr(summary: str, timestamp: str):
                 [gh_path, "pr", "create",
                  "--title", f"fix: auto-fix failing Playwright tests ({timestamp})",
                  "--body", body,
-                 "--base", "main"],
+                 "--base", base],
                 capture_output=True, text=True, cwd=PROJECT_ROOT,
             )
             if r.returncode == 0:
@@ -327,7 +371,7 @@ def create_pr(summary: str, timestamp: str):
     # Fallback: print a GitHub compare URL the user can open in their browser
     remote_url = _run(["git", "remote", "get-url", "origin"]).stdout.strip()
     repo_path = re.sub(r"(https://github\.com/|git@github\.com:)", "", remote_url).removesuffix(".git")
-    compare_url = f"https://github.com/{repo_path}/compare/main...{branch}?expand=1"
+    compare_url = f"https://github.com/{repo_path}/compare/{base}...{branch}?expand=1"
     print(f"[WARN] gh CLI unavailable ({gh_error})")
     print(f"[*]  Open this URL to create the PR manually:")
     print(f"     {compare_url}")
@@ -436,12 +480,20 @@ def main():
 
     print(f"[*] Claude says: {fix_plan.get('summary', '')}")
 
-    # ── 4. Apply fixes ──────────────────────────────────────────────────────
-    print("\n[4/5] Applying fixes…")
+    # ── 4. Create branch BEFORE touching any files ───────────────────────────
+    print("\n[4/6] Creating fix branch (before modifying any files)…")
+    branch = create_branch(timestamp)
+    if branch is None:
+        return 1
+
+    # ── 5. Apply fixes on the new branch ────────────────────────────────────
+    print("\n[5/6] Applying fixes…")
     applied = apply_fixes(fix_plan)
 
     if applied == 0:
         print("[!] No fixes were applied (nothing changed).")
+        _run(["git", "checkout", _base_branch()])
+        _run(["git", "branch", "-D", branch])
         return 1
 
     print(f"[*] Applied {applied} fix(es). Re-running tests…")
@@ -456,15 +508,15 @@ def main():
             print(f"       {f['file_path']}::{f['test_name']}")
         print("[*] Proceeding with PR anyway — manual review required.")
 
-    # ── 5. Create PR ────────────────────────────────────────────────────────
-    print("\n[5/5] Creating pull request…")
-    pr_url = create_pr(fix_plan.get("summary", "auto-fix"), timestamp)
+    # ── 6. Commit, push, open PR ─────────────────────────────────────────────
+    print("\n[6/6] Committing and creating pull request…")
+    pr_url = commit_and_push_pr(branch, fix_plan.get("summary", "auto-fix"), timestamp)
 
     if pr_url:
         _banner(f"PR created successfully!\n  {pr_url}")
         return 0
     else:
-        print("\n[ERROR] PR creation failed. Your fixes are committed locally.")
+        print("\n[ERROR] PR creation failed.")
         return 1
 
 

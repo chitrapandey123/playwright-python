@@ -12,6 +12,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  pull-requests: write
 
 jobs:
   test:
@@ -21,6 +22,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -41,11 +44,13 @@ jobs:
           path: gh-pages
 
       - name: Run tests
+        id: run_tests
         env:
           BASE_URL: ${{ secrets.BASE_URL || 'https://www.saucedemo.com' }}
         run: |
           mkdir -p allure-results
           pytest -v --tb=short
+        continue-on-error: true
 
       - name: Copy Allure history
         if: always()
@@ -78,3 +83,15 @@ jobs:
           publish_dir: allure-report
           destination_dir: allure-history
           keep_files: true
+
+      - name: Run auto-fix agent
+        if: steps.run_tests.outcome == 'failure' && !startsWith(github.ref, 'refs/heads/auto-fix/')
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE_BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name "auto-fix-agent[bot]"
+          git config user.email "auto-fix-agent@users.noreply.github.com"
+          python auto_fix_agent.py
