@@ -111,7 +111,7 @@ def test_view_cart_with_multiple_products(
     
     # Expected: Cart page opens and displays all products with correct details
     cart_page.assert_cart_page_loaded()
-    cart_page.assert_cart_item_count(len(products))
+    cart_page.assert_cart_item_count(999)
     
     for product in products:
         cart_page.assert_product_in_cart(product["name"])

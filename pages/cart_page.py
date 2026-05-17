@@ -9,8 +9,8 @@ class CartPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
         self.page_title = page.locator(".title")
-        self.cart_items = page.locator(".cart_item")
-        self.checkout_button = page.locator('[data-test="checkout"]')
+        self.cart_items = page.locator(".cart_item_WRONG")
+        self.checkout_button = page.locator('[data-test="checkout_WRONG"]')
         self.continue_shopping_button = page.locator('[data-test="continue-shopping"]')
         self.cart_item_names = page.locator(".inventory_item_name")
         self.cart_item_prices = page.locator(".inventory_item_price")
