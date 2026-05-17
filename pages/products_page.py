@@ -107,8 +107,8 @@ class ProductsPage(BasePage):
 
     @allure.step("Logout")
     def logout(self):
-        self.menu_button.wait_for(state="visible")
+        expect(self.menu_button).to_be_visible()
         self.menu_button.click()
-        self.logout_link.wait_for(state="visible")
+        expect(self.logout_link).to_be_visible()
         self.logout_link.click()
         self.page.wait_for_load_state("networkidle")
