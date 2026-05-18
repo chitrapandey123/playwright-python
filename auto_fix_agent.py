@@ -194,6 +194,13 @@ Rules:
 - Prefer fixing page objects when a selector/method is wrong.
 - If a test references a wrong test-data key, fix the test to use the correct key.
 - Do NOT change test logic unless it is genuinely wrong.
+- NEVER modify base_page.py or any quality/validation method (assert_text_has_no_html,
+  pytest_check soft assertions, regex content checks). These exist to catch real bugs —
+  weakening them to make a test pass is always wrong.
+- If a test fails because a quality check catches a suspicious UI pattern (e.g. method-like
+  text in a product name), do NOT fix it — leave it for human review.
+- Only fix: wrong CSS selectors, wrong locator IDs, hardcoded wrong expected values,
+  wrong test data keys.
 
 Respond with ONLY a valid JSON object (no markdown fences, no extra text):
 
