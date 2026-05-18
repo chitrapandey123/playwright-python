@@ -1,5 +1,69 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"failed","Mon May 18 20:25:58 UTC 2026","Mon May 18 20:26:04 UTC 2026","5160","tests","test_cart","","","","test_view_cart_with_multiple_products[chromium]","
+"passed","Mon May 18 20:28:06 UTC 2026","Mon May 18 20:28:06 UTC 2026","127","tests","test_cart","","","","test_cart_badge_shows_zero_when_no_items_in_cart[chromium]","
+    Test: Cart badge shows zero when no items in cart
+    Type: Edge Case
+    Preconditions: User is logged in and viewing product listings page with empty cart
+    
+    Verifies that the cart badge shows 0 or is not visible when the cart is empty.
+    "
+"failed","Mon May 18 20:28:11 UTC 2026","Mon May 18 20:28:11 UTC 2026","249","tests","test_products","TestViewProductListings","","","test_view_product_listings_after_successful_login[chromium]","
+        Test: View product listings after successful login
+        Type: Positive
+        Preconditions: User has valid login credentials
+        "
+"passed","Mon May 18 20:28:09 UTC 2026","Mon May 18 20:28:09 UTC 2026","94","tests","test_login","TestLogin","","","test_login_failure_with_invalid_username[chromium]","
+        Test: Login failure with invalid username
+        Type: Negative
+        Jira Story: QA-1 - User should be able to log in
+        Preconditions: Login page is displayed
+        "
+"passed","Mon May 18 20:28:06 UTC 2026","Mon May 18 20:28:06 UTC 2026","57","tests","test_cart","","","","test_successfully_add_product_to_cart_updates_button_and_badge[chromium]","
+    Test: Successfully add product to cart updates button and badge
+    Type: Positive
+    Jira Story: QA-3 - Add Item to Cart
+    
+    Preconditions: User is logged in and viewing product listings
+    "
+"passed","Mon May 18 20:28:09 UTC 2026","Mon May 18 20:28:09 UTC 2026","99","tests","test_login","TestLogin","","","test_login_fails_with_invalid_password[chromium]","
+        Test: Login fails with invalid password
+        Jira Story: QA-1 - User should be able to log in
+        Type: Negative
+        "
+"passed","Mon May 18 20:28:08 UTC 2026","Mon May 18 20:28:08 UTC 2026","113","tests","test_login","TestLogin","","","test_successful_login_with_valid_credentials[chromium]","
+        QA-1: User should be able to log in
+        Test: Successful login with valid credentials
+        
+        Preconditions: User is on login page
+        "
+"passed","Mon May 18 20:28:08 UTC 2026","Mon May 18 20:28:08 UTC 2026","130","tests","test_login","TestLogin","","","test_sucessful_standard_user_login[chromium]",""
+"passed","Mon May 18 20:28:12 UTC 2026","Mon May 18 20:28:12 UTC 2026","124","tests","test_products","TestViewProductListings","","","test_product_listings_not_accessible_without_login[chromium]","
+        Test: Product listings not accessible without login
+        Type: Negative
+        Preconditions: User is not logged in
+        "
+"passed","Mon May 18 20:28:05 UTC 2026","Mon May 18 20:28:05 UTC 2026","133","tests","test_cart","","","","test_view_empty_cart[chromium]","
+    Test: View empty cart
+    Type: Edge Case
+    Jira Story: QA-4 - View Cart Contents
+    Preconditions: User is logged in and cart is empty
+    "
+"passed","Mon May 18 20:28:12 UTC 2026","Mon May 18 20:28:12 UTC 2026","85","tests","test_products","TestViewProductListings","","","test_product_images_load_correctly[chromium]","
+        Test: Product images load correctly
+        Type: Positive
+        Jira Story: QA-2 - View Product Listings
+        
+        Preconditions: User is logged in and viewing product listings page
+        Steps:
+            1. Verify all product images load properly
+        Expected: All product images display correctly without broken image placeholders
+        "
+"passed","Mon May 18 20:28:03 UTC 2026","Mon May 18 20:28:03 UTC 2026","156","tests","test_cart","","","","test_add_multiple_different_products_to_cart[chromium]","
+    QA-3: Add Item to Cart
+    Test: Add multiple different products to cart
+    Verify that user can add multiple different products to cart
+    and cart badge updates correctly for each addition.
+    "
+"passed","Mon May 18 20:28:04 UTC 2026","Mon May 18 20:28:04 UTC 2026","189","tests","test_cart","","","","test_view_cart_with_multiple_products[chromium]","
     Test: View cart with multiple added products
     Jira Story: QA-4 - View Cart Contents
     Type: Positive
@@ -11,62 +75,7 @@
     2. Click on the cart icon
     3. Verify cart page displays all added products with correct details
     "
-"failed","Mon May 18 20:26:06 UTC 2026","Mon May 18 20:26:11 UTC 2026","5231","tests","test_cart","","","","test_rapid_multiple_clicks_on_add_to_cart_button[chromium]","
-    Test: Rapid multiple clicks on Add to Cart button
-    Type: Edge Case
-    Preconditions: User is on product page with empty cart
-    
-    Verifies that rapidly clicking Add to Cart button multiple times
-    only adds the product once to the cart.
-    "
-"passed","Mon May 18 20:26:12 UTC 2026","Mon May 18 20:26:12 UTC 2026","108","tests","test_login","TestLogin","","","test_login_fails_with_invalid_password[chromium]","
-        Test: Login fails with invalid password
-        Jira Story: QA-1 - User should be able to log in
-        Type: Negative
-        "
-"passed","Mon May 18 20:26:19 UTC 2026","Mon May 18 20:26:19 UTC 2026","105","tests","test_products","TestViewProductListings","","","test_product_listings_not_accessible_without_login[chromium]","
-        Test: Product listings not accessible without login
-        Type: Negative
-        Preconditions: User is not logged in
-        "
-"passed","Mon May 18 20:26:11 UTC 2026","Mon May 18 20:26:11 UTC 2026","153","tests","test_login","TestLogin","","","test_sucessful_standard_user_login[chromium]",""
-"passed","Mon May 18 20:26:04 UTC 2026","Mon May 18 20:26:04 UTC 2026","88","tests","test_cart","","","","test_view_empty_cart[chromium]","
-    Test: View empty cart
-    Type: Edge Case
-    Jira Story: QA-4 - View Cart Contents
-    Preconditions: User is logged in and cart is empty
-    "
-"failed","Mon May 18 20:26:13 UTC 2026","Mon May 18 20:26:18 UTC 2026","5003","tests","test_login","TestLogout","","","test_successful_logout_from_application[chromium]","
-        Test: Successful logout from application
-        Type: Positive
-        Preconditions: User is logged in and on any page of the application
-        Steps:
-          1. Click the logout link/menu option
-          Expected: System redirects to login page and user session is terminated
-        "
-"passed","Mon May 18 20:26:05 UTC 2026","Mon May 18 20:26:05 UTC 2026","51","tests","test_cart","","","","test_successfully_add_product_to_cart_updates_button_and_badge[chromium]","
-    Test: Successfully add product to cart updates button and badge
-    Type: Positive
-    Jira Story: QA-3 - Add Item to Cart
-    
-    Preconditions: User is logged in and viewing product listings
-    "
-"failed","Mon May 18 20:26:18 UTC 2026","Mon May 18 20:26:18 UTC 2026","286","tests","test_products","TestViewProductListings","","","test_view_product_listings_after_successful_login[chromium]","
-        Test: View product listings after successful login
-        Type: Positive
-        Preconditions: User has valid login credentials
-        "
-"passed","Mon May 18 20:26:19 UTC 2026","Mon May 18 20:26:19 UTC 2026","64","tests","test_products","TestViewProductListings","","","test_product_images_load_correctly[chromium]","
-        Test: Product images load correctly
-        Type: Positive
-        Jira Story: QA-2 - View Product Listings
-        
-        Preconditions: User is logged in and viewing product listings page
-        Steps:
-            1. Verify all product images load properly
-        Expected: All product images display correctly without broken image placeholders
-        "
-"passed","Mon May 18 20:25:58 UTC 2026","Mon May 18 20:25:58 UTC 2026","104","tests","test_cart","","","","test_view_cart_with_added_products[chromium]","
+"passed","Mon May 18 20:28:03 UTC 2026","Mon May 18 20:28:03 UTC 2026","119","tests","test_cart","","","","test_view_cart_with_added_products[chromium]","
     Test: View cart with added products
     Jira Story: QA-4 - View Cart Contents
     Type: Positive
@@ -79,34 +88,25 @@
     3. Verify cart page opens and displays list of all added products 
        with correct names, prices, quantities, and images
     "
-"passed","Mon May 18 20:26:12 UTC 2026","Mon May 18 20:26:12 UTC 2026","109","tests","test_login","TestLogin","","","test_login_failure_with_invalid_username[chromium]","
-        Test: Login failure with invalid username
-        Type: Negative
-        Jira Story: QA-1 - User should be able to log in
-        Preconditions: Login page is displayed
+"passed","Mon May 18 20:28:10 UTC 2026","Mon May 18 20:28:11 UTC 2026","973","tests","test_login","TestLogout","","","test_successful_logout_from_application[chromium]","
+        Test: Successful logout from application
+        Type: Positive
+        Preconditions: User is logged in and on any page of the application
+        Steps:
+          1. Click the logout link/menu option
+          Expected: System redirects to login page and user session is terminated
         "
-"passed","Mon May 18 20:26:05 UTC 2026","Mon May 18 20:26:05 UTC 2026","159","tests","test_cart","","","","test_cart_badge_shows_zero_when_no_items_in_cart[chromium]","
-    Test: Cart badge shows zero when no items in cart
-    Type: Edge Case
-    Preconditions: User is logged in and viewing product listings page with empty cart
-    
-    Verifies that the cart badge shows 0 or is not visible when the cart is empty.
-    "
-"passed","Mon May 18 20:26:04 UTC 2026","Mon May 18 20:26:05 UTC 2026","164","tests","test_cart","","","","test_remove_product_from_cart[chromium]","
+"passed","Mon May 18 20:28:05 UTC 2026","Mon May 18 20:28:05 UTC 2026","220","tests","test_cart","","","","test_remove_product_from_cart[chromium]","
     Test: Remove product from cart
     Type: Positive
     Jira Story: QA-3 - Add Item to Cart
     Preconditions: User is logged in and has one product in cart
     "
-"passed","Mon May 18 20:26:12 UTC 2026","Mon May 18 20:26:12 UTC 2026","146","tests","test_login","TestLogin","","","test_successful_login_with_valid_credentials[chromium]","
-        QA-1: User should be able to log in
-        Test: Successful login with valid credentials
-        
-        Preconditions: User is on login page
-        "
-"passed","Mon May 18 20:25:57 UTC 2026","Mon May 18 20:25:58 UTC 2026","145","tests","test_cart","","","","test_add_multiple_different_products_to_cart[chromium]","
-    QA-3: Add Item to Cart
-    Test: Add multiple different products to cart
-    Verify that user can add multiple different products to cart
-    and cart badge updates correctly for each addition.
+"passed","Mon May 18 20:28:07 UTC 2026","Mon May 18 20:28:07 UTC 2026","237","tests","test_cart","","","","test_rapid_multiple_clicks_on_add_to_cart_button[chromium]","
+    Test: Rapid multiple clicks on Add to Cart button
+    Type: Edge Case
+    Preconditions: User is on product page with empty cart
+    
+    Verifies that rapidly clicking Add to Cart button multiple times
+    only adds the product once to the cart.
     "
