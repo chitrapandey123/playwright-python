@@ -89,10 +89,16 @@ class ProductsPage(BasePage):
         items = self.inventory_items.all()
         assert len(items) > 0, "No products found on the page"
         for item in items:
+            # Hard assertions — critical, test stops if element missing
             expect(item.locator("img.inventory_item_img")).to_be_visible()
             expect(item.locator(".inventory_item_name")).to_be_visible()
             expect(item.locator(".inventory_item_price")).to_be_visible()
             expect(item.locator("button")).to_be_visible()
+
+            # Soft assertion — test continues even if this fails
+            self.assert_text_has_no_html(
+                item.locator(".inventory_item_name"), label="Product name"
+            )
 
     @allure.step("Assert all product images loaded correctly")
     def assert_all_product_images_loaded(self):

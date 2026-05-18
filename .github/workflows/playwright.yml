@@ -88,13 +88,14 @@ jobs:
         if: steps.run_tests.outcome == 'failure' && !startsWith(github.ref, 'refs/heads/auto-fix/')
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
           BASE_BRANCH: ${{ github.ref_name }}
         run: |
           git config user.name "auto-fix-agent[bot]"
           git config user.email "auto-fix-agent@users.noreply.github.com"
-          python auto_fix_agent.py
+          git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git
+          python auto_fix_agent.py 2>&1
 
       - name: Fail job if tests failed
         if: steps.run_tests.outcome == 'failure'
