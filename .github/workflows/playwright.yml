@@ -63,8 +63,9 @@ jobs:
         if: always()
         run: |
           mkdir -p allure-results/history
-          if [ -d "gh-pages/${REPORT_DIR}/history" ]; then
-            cp -r "gh-pages/${REPORT_DIR}/history/." allure-results/history/
+          HISTORY_DIR="gh-pages/reports/${BRANCH_SAFE}/history"
+          if [ -d "${HISTORY_DIR}" ]; then
+            cp -r "${HISTORY_DIR}/." allure-results/history/
           fi
 
       - name: Generate Allure report
@@ -90,6 +91,16 @@ jobs:
           publish_dir: allure-report
           destination_dir: ${{ env.REPORT_DIR }}
           keep_files: true
+
+      - name: Update branch history for next run
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-report/history
+          destination_dir: reports/${{ env.BRANCH_SAFE }}/history
+          keep_files: false
+          force_orphan: false
 
       - name: Print report URL
         if: always()
