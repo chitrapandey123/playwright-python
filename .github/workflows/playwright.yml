@@ -7,6 +7,15 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Environment to test'
+        required: true
+        default: 'prod'
+        type: choice
+        options:
+          - prod
 
 permissions:
   contents: write
@@ -46,7 +55,7 @@ jobs:
       - name: Run tests
         id: run_tests
         env:
-          BASE_URL: ${{ secrets.BASE_URL || 'https://www.saucedemo.com' }}
+          ENV: ${{ github.event.inputs.env || 'prod' }}
         run: |
           mkdir -p allure-results
           pytest -v --tb=short

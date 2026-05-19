@@ -1,11 +1,11 @@
-import os
 import re
 import pytest_check as check
 from playwright.sync_api import Page
+from utils.config import config
 
 
 class BasePage:
-    BASE_URL = os.getenv("BASE_URL", "https://www.saucedemo.com")
+    BASE_URL = config["base_url"]
 
     def __init__(self, page: Page):
         self.page = page
