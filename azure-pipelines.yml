@@ -1,0 +1,65 @@
+trigger:
+  branches:
+    include:
+      - '*'
+
+pr:
+  branches:
+    include:
+      - main
+
+parameters:
+  - name: env
+    displayName: 'Environment to test'
+    type: string
+    default: 'prod'
+    values:
+      - prod
+
+variables:
+  ENV: ${{ parameters.env }}
+  python.version: '3.11'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: UsePythonVersion@0
+    displayName: 'Set up Python'
+    inputs:
+      versionSpec: '$(python.version)'
+
+  - script: pip install -r requirements.txt
+    displayName: 'Install dependencies'
+
+  - script: playwright install --with-deps chromium
+    displayName: 'Install Playwright browsers'
+
+  - script: |
+      mkdir -p allure-results
+      pytest --tb=short
+    displayName: 'Run tests'
+    continueOnError: true
+    env:
+      ENV: $(ENV)
+
+  - script: |
+      wget -q https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.tgz
+      tar -xzf allure-2.27.0.tgz
+      ./allure-2.27.0/bin/allure generate allure-results -o allure-report --clean
+    displayName: 'Generate Allure report'
+    condition: always()
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Allure report'
+    condition: always()
+    inputs:
+      targetPath: 'allure-report'
+      artifact: 'allure-report-$(Build.SourceBranchName)-$(Build.BuildNumber)'
+      publishLocation: 'pipeline'
+
+  - script: |
+      echo "##vso[task.logissue type=error]Tests failed — see Allure report in pipeline artifacts."
+      exit 1
+    displayName: 'Fail pipeline if tests failed'
+    condition: failed()
